@@ -15,7 +15,8 @@ class CategoryController extends Controller
     public function index()
     {
         // $categories = Category::all()->paginate(5);;
-        $categories = Category::paginate(2);
+        $categories = Category::with('parent')->paginate(5);
+
         return view('categories.index')->with('categories', $categories);
     }
     // public function index1(){
@@ -39,22 +40,13 @@ class CategoryController extends Controller
         $request->validate($this->rules());
         //add file
         $request['slug'] = Str::slug($request->name);
-        $image = $request->file('image');
-        $data = $request->all();
-        if ($request->hasFile('image')) {
-            $image_url = $image->store('categories', 'public');
-            $data['image'] = $image_url;
-        }
-
         // $category = new Cate gory();
         // $category->name = $request->name;
         // $category->description = $request->description;
         // $category->slug = Str::slug($request->name);
         // $category->parent_id = $request->parent_id;
         // $category->save();
-
-        Category::create($data);
-
+        Category::create($request->all());
         // Category::create($request->all());
         return redirect()->route('categories.index')->with('done', 'Category Added');
     }
@@ -63,6 +55,12 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $categories = Category::where('id', '<>', $id)->get();
         return view('categories.edit', compact('category', 'categories'));
+    }
+    public function show($id)
+    {
+        $category = Category::with('parent', 'children')->findOrFail($id);
+        $products = $category->products;
+        return view('categories.show', compact('category', 'products'));
     }
     public function update(Request $request, $id)
     {
@@ -77,7 +75,21 @@ class CategoryController extends Controller
         $category->update($request->all());
         return redirect()->route('categories.index')->with('done', 'Category Updated');
     }
-
+    public function trashedCategories()
+    {
+        $categories = Category::onlyTrashed()->get();
+        return view(
+            'categories.trashed-categories',
+            ['categories' => $categories]
+        );
+    }
+    public function forceDeleteCategory($id)
+    {
+        $category = Category::find($id);
+        $category->forceDelete();
+        return redirect()->route('categories.trashed-categories')
+            ->with('done', 'Category Deleted');
+    }
     public function destroy($id)
     {
         $category = Category::findOrFail($id);

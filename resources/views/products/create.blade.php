@@ -9,7 +9,6 @@
                     {{ $item }}
                 </div>
             @endforeach ($errors as $item)
-
         @endif
         <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
             @csrf

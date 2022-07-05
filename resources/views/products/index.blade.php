@@ -13,21 +13,31 @@
                     <th scope="col">Name</th>
                     <th scope="col">Price</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Delete</th>
+                    <th scope="col">Category name</th>
+                    <th scope="col">Sale Price</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($products as $product)
                     <tr>
-                        <th scope="row">{{ $product->id }}</th>
+                        <th>{{ $product->id }}</th>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->description }}</td>
-                        <td><a href="{{ route('products.edit', $product->id) }}"><button type="button"
-                                    class="btn btn-primary">Edit</button></a></td>
+                        <td>{{ $product->category->name }}</td>
+                        <td>{{ $product->sale_price }}</td>
                         <td>
-                            <form method="POST" action="{{ route('products.destroy', $product->id) }}">
+                            @if ($product->image)
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="" width="50px"
+                                    height="50px">
+                            @endif
+                        </td>
+                        <td><a href="{{ route('products.edit', $product->id) }}"><button type="button"
+                                    class="btn btn-primary">Edit</button></a>
+                            <form method="POST" action="{{ route('products.destroy', $product->id) }}"
+                                class="d-inline-block">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
@@ -37,7 +47,7 @@
                 @endforeach
             </tbody>
         </table>
-        {{ $products->links() }}
+        {{-- {{ $products->links() }} --}}
     </div>
 
 @endsection('content')

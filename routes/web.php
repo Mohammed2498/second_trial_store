@@ -31,15 +31,20 @@ Route::group([
     Route::get('categories', [CategoryController::class, 'index'])->name('index');
     Route::get('categories/create', [CategoryController::class, 'create'])->name('create');
     Route::post('categories/create', [CategoryController::class, 'store'])->name('store');
+    Route::get('categories/trashed-categories', [CategoryController::class, 'trashedCategories'])
+        ->name('trashed-categories');
+    Route::delete('categories/{id}/force-delete-category', [CategoryController::class, 'forceDeleteCategory'])
+        ->name('forceDelete');
     Route::get('categories/{id}/edit', [CategoryController::class, 'edit'])->name('edit');
     Route::put('categories/{id}', [CategoryController::class, 'update'])->name('update');
     Route::delete('categories/{id}', [CategoryController::class, 'destroy'])->name('destroy');
+    Route::get('categories/{id}', [CategoryController::class, 'show'])->name('show');
 });
 //--------------------------//
 Route::group([
-    'prefix'=>'dashboard',
-],function(){
-    Route::resource('products',ProductController::class);
+    'prefix' => 'dashboard',
+], function () {
+    Route::resource('products', ProductController::class);
 });
 
 // Route::get('products', [ProductController::class, 'index']);

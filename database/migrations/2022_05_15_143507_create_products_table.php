@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->double('cost');
-            $table->double('price');
+            $table->double('cost')->default(0);
+            $table->double('price')->default(0);
             $table->double('sale_price');
             $table->unsignedInteger('quantity');
             $table->string('image')->nullable();

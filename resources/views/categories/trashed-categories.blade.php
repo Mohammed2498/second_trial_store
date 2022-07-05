@@ -6,9 +6,6 @@
         <a href="{{ route('categories.create') }}">
             <button type="button" class="btn btn-primary btn-lg">Add New Category</button>
         </a>
-        <a href="{{ route('categories.trashed-categories') }}">
-            <button type="button" class="btn btn-danger btn-lg">Deleted Categories</button>
-        </a>
         <table class="table">
             <thead>
                 <tr>
@@ -17,9 +14,7 @@
                     <th scope="col">Description</th>
                     <th scope="col">Slug</th>
                     <th scope="col">Parent</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Delete</th>
-                    <th scope="col">Show</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,22 +30,20 @@
                             @endif --}}
                         </td>
                         <td>{{ $category->parent->name }}</td>
-                        <td><a href="{{ route('categories.edit', $category->id) }}"><button type="button"
-                                    class="btn btn-primary">Edit</button></a></td>
-
                         <td>
-                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST">
+                            <a href="" class="btn btn-warning">Restore</a>
+                            <form action="{{ route('categories.forceDelete', $category->id) }}" method="POST"
+                                class="d-inline-block">
                                 @method('DELETE')
                                 @csrf
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </td>
-                        <td><a href="{{ route('categories.show', $category->id) }}"><button type="button"
-                                    class="btn btn-success">Show</button></a></td>
+
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        {{ $categories->links() }}
+        {{-- {{ $categories->links() }} --}}
     </div>
 @endsection

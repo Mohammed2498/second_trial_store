@@ -2,7 +2,6 @@
 @section('page_title', 'Edit Category')
 @section('content')
     <div class="mx-auto" style="width: 800px">
-
         @if ($errors->any())
             @foreach ($errors->all() as $item)
                 <div class="alert alert-danger">
